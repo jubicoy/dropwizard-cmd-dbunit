@@ -77,12 +77,10 @@ def setVersion (repo, version, scheme):
     }
     schemeMap.get(scheme)(repo, version)
     repo.index.commit("Bumped version to {}".format(version))
-    repo.remotes.origin.push()
 
 
 def tagVersion (repo, version):
     new_tag = repo.create_tag(version, message="v{} Release".format(version))
-    repo.remotes.origin.push(new_tag)
 
 def doPrompt (tag, snapshot, scheme):
     rsp = raw_input('Tag: {0}, Snapshot: {1}, Scheme: {2}. Continue? [y/N]: '.format(tag, snapshot, scheme))
