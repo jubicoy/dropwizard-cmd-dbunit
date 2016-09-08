@@ -1,10 +1,10 @@
 package fi.jubic.dropwizard.cmd.dbunit.template.base64;
 
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 
 import java.util.List;
+import java.util.Base64;
 
 /**
  * @author Vilppu Vuorinen, vilppu.vuorinen@jubic.fi
@@ -21,13 +21,11 @@ public class Base64Encoder implements TemplateMethodModelEx {
             throw new TemplateModelException("Invalid number of arguments");
 
         try {
-            return Base64.encode(
+            return Base64.getEncoder().encodeToString(
                     ((String) list.get(0)).getBytes()
             );
         } catch (ClassCastException ignore) {
-            throw new TemplateModelException(
-                    String.format("Invalid argument type.")
-            );
+            throw new TemplateModelException("Invalid argument type.");
         }
     }
 }
