@@ -1,4 +1,4 @@
-package fi.jubic.dropwizard.cmd.dbunit.template;
+package fi.jubic.dropwizard.cmd.dbunit.template.date;
 
 import freemarker.template.TemplateModelException;
 

@@ -1,6 +1,7 @@
 package fi.jubic.dropwizard.cmd.dbunit.cli;
 
-import fi.jubic.dropwizard.cmd.dbunit.template.DateObject;
+import fi.jubic.dropwizard.cmd.dbunit.template.base64.Base64Encoder;
+import fi.jubic.dropwizard.cmd.dbunit.template.date.DateObject;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import io.dropwizard.Configuration;
@@ -87,6 +88,7 @@ class DbUnitPopulateCommand<T extends Configuration> extends AbsDbUnitCommand<T>
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         Map<String, Object> model = new HashMap<>();
         model.put("t", new DateObject(new Date()));
+        model.put("base64", new Base64Encoder());
         t.process(model, new OutputStreamWriter(out));
         return new ByteArrayInputStream(out.toByteArray());
     }

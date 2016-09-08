@@ -1,4 +1,4 @@
-package fi.jubic.dropwizard.cmd.dbunit.template;
+package fi.jubic.dropwizard.cmd.dbunit.template.date;
 
 import java.util.Date;
 import java.util.HashMap;

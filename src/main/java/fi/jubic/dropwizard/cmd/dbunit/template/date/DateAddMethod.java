@@ -1,4 +1,4 @@
-package fi.jubic.dropwizard.cmd.dbunit.template;
+package fi.jubic.dropwizard.cmd.dbunit.template.date;
 
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
@@ -12,7 +12,7 @@ import java.util.List;
  * @author Vilppu Vuorinen, vilppu.vuorinen@jubic.fi
  * @since 0.1.1, 10.7.2016.
  */
-class DateSubtractMethod implements TemplateMethodModelEx {
+class DateAddMethod implements TemplateMethodModelEx {
     //
     // Fields
     // **************************************************************
@@ -21,7 +21,7 @@ class DateSubtractMethod implements TemplateMethodModelEx {
     //
     // Constructor(s)
     // **************************************************************
-    DateSubtractMethod(Date now) {
+    DateAddMethod(Date now) {
         this.now = now;
     }
 
@@ -34,7 +34,7 @@ class DateSubtractMethod implements TemplateMethodModelEx {
             throw new TemplateModelException("Invalid number of arguments");
 
         return DateMethodUtil.toTimestamp(
-                DateMethodUtil.subtract(
+                DateMethodUtil.add(
                         now,
                         DateMethodUtil.<TemplateNumberModel>safeGet(list, 0).getAsNumber().intValue(),
                         DateMethodUtil.<TemplateScalarModel>safeGet(list, 1).getAsString()
