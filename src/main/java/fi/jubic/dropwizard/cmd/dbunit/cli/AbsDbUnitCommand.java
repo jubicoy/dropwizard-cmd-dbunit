@@ -13,6 +13,7 @@ import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
+import org.dbunit.ext.hsqldb.HsqldbDataTypeFactory;
 import org.dbunit.ext.mysql.MySqlDataTypeFactory;
 import org.dbunit.ext.postgresql.PostgresqlDataTypeFactory;
 
@@ -95,6 +96,10 @@ abstract class AbsDbUnitCommand<T extends Configuration> extends ConfiguredComma
 
             case "com.mysql.jdbc.Driver":
                 dataTypeFactory = new MySqlDataTypeFactory();
+                break;
+
+            case "org.hsqldb.jdbcDriver":
+                dataTypeFactory = new HsqldbDataTypeFactory();
                 break;
 
             default:
