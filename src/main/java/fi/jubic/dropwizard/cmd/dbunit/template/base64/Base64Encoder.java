@@ -2,6 +2,7 @@ package fi.jubic.dropwizard.cmd.dbunit.template.base64;
 
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
+import freemarker.template.TemplateScalarModel;
 
 import java.util.List;
 import java.util.Base64;
@@ -11,7 +12,6 @@ import java.util.Base64;
  * @since 0.2.1, 8.9.2016.
  */
 public class Base64Encoder implements TemplateMethodModelEx {
-
     //
     // TemplateMethodEx impl
     // **************************************************************
@@ -22,7 +22,7 @@ public class Base64Encoder implements TemplateMethodModelEx {
 
         try {
             return Base64.getEncoder().encodeToString(
-                    ((String) list.get(0)).getBytes()
+                    ((TemplateScalarModel) list.get(0)).getAsString().getBytes()
             );
         } catch (ClassCastException ignore) {
             throw new TemplateModelException("Invalid argument type.");
