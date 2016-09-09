@@ -1,5 +1,6 @@
 package fi.jubic.dropwizard.cmd.dbunit.cli;
 
+import fi.jubic.dropwizard.cmd.dbunit.DatabaseConfigurator;
 import io.dropwizard.Configuration;
 import io.dropwizard.db.DatabaseConfiguration;
 import io.dropwizard.setup.Bootstrap;
@@ -31,7 +32,8 @@ public class DbUnitCommand<T extends Configuration> extends AbsDbUnitCommand<T> 
     // **************************************************************
     public DbUnitCommand(
             DatabaseConfiguration<T> strategy,
-            Class<T> configurationClass
+            Class<T> configurationClass,
+            DatabaseConfigurator databaseConfigurator
     ) {
         super(
                 COMMAND_NAME,
@@ -40,8 +42,8 @@ public class DbUnitCommand<T extends Configuration> extends AbsDbUnitCommand<T> 
                 configurationClass
         );
 
-        addSubcommand(new DbUnitPopulateCommand<>(strategy, configurationClass));
-        addSubcommand(new DbUnitGenerateDtdCommand<>(strategy, configurationClass));
+        addSubcommand(new DbUnitPopulateCommand<>(strategy, configurationClass, databaseConfigurator));
+        addSubcommand(new DbUnitGenerateDtdCommand<>(strategy, configurationClass, databaseConfigurator));
     }
 
     //

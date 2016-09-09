@@ -22,12 +22,21 @@ public class DbUnitBundle<T extends Configuration> implements Bundle, DatabaseCo
     // Fields
     // **************************************************************
     private final Function<T, PooledDataSourceFactory> extractor;
+    private final DatabaseConfigurator databaseConfigurator;
 
     //
     // Constructor(s)
     // **************************************************************
     public DbUnitBundle (Function<T, PooledDataSourceFactory> extractor) {
+        this(extractor, null);
+    }
+
+    public DbUnitBundle (
+            Function<T, PooledDataSourceFactory> extractor,
+            DatabaseConfigurator databaseConfigurator
+    ) {
         this.extractor = extractor;
+        this.databaseConfigurator = databaseConfigurator;
     }
 
     //
@@ -38,7 +47,7 @@ public class DbUnitBundle<T extends Configuration> implements Bundle, DatabaseCo
         logger.info("Initializing DbUnitBundle ...");
         @SuppressWarnings("unchecked")
         final Class<T> klass = (Class<T>)bootstrap.getApplication().getConfigurationClass();
-        bootstrap.addCommand(new DbUnitCommand<T>(this, klass));
+        bootstrap.addCommand(new DbUnitCommand<T>(this, klass, databaseConfigurator));
     }
 
     @Override

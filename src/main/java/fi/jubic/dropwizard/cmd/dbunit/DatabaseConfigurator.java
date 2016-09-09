@@ -1,5 +1,7 @@
 package fi.jubic.dropwizard.cmd.dbunit;
 
+import org.dbunit.database.DatabaseConfig;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +33,12 @@ public class DatabaseConfigurator {
         Map<String, DbProperty> newProps = new HashMap<>(properties);
         newProps.put(key, new DbProperty(key, value));
         return new DatabaseConfigurator(newProps);
+    }
+
+    public void configure (DatabaseConfig config) {
+        this.properties.forEach((k, v) -> {
+            config.setProperty(v.key, v.value);
+        });
     }
 
     //

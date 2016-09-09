@@ -1,5 +1,6 @@
 package fi.jubic.dropwizard.cmd.dbunit.cli;
 
+import fi.jubic.dropwizard.cmd.dbunit.DatabaseConfigurator;
 import io.dropwizard.Configuration;
 import io.dropwizard.db.DatabaseConfiguration;
 import io.dropwizard.setup.Bootstrap;
@@ -15,12 +16,19 @@ import org.slf4j.LoggerFactory;
  */
 class DbUnitGenerateDtdCommand<T extends Configuration> extends AbsDbUnitCommand<T> {
     private static Logger logger = LoggerFactory.getLogger(DbUnitGenerateDtdCommand.class);
+
+    //
+    // Fields
+    // **************************************************************
+    private final DatabaseConfigurator databaseConfigurator;
+
     //
     // Constructor(s)
     // **************************************************************
     DbUnitGenerateDtdCommand (
             DatabaseConfiguration<T> strategy,
-            Class<T> configurationClass
+            Class<T> configurationClass,
+            DatabaseConfigurator databaseConfigurator
     ) {
         super(
                 "generate-dtd",
@@ -28,6 +36,7 @@ class DbUnitGenerateDtdCommand<T extends Configuration> extends AbsDbUnitCommand
                 strategy,
                 configurationClass
         );
+        this.databaseConfigurator = databaseConfigurator;
     }
 
     //
@@ -40,6 +49,9 @@ class DbUnitGenerateDtdCommand<T extends Configuration> extends AbsDbUnitCommand
             IDatabaseConnection connection
     ) throws Exception {
         logger.info("DB schema DTD:");
+        if (databaseConfigurator != null)
+            databaseConfigurator.configure(connection.getConfig());
+
         FlatDtdDataSet.write(
                 connection.createDataSet(),
                 System.out

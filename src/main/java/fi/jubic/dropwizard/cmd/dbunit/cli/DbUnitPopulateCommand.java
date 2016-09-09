@@ -1,5 +1,6 @@
 package fi.jubic.dropwizard.cmd.dbunit.cli;
 
+import fi.jubic.dropwizard.cmd.dbunit.DatabaseConfigurator;
 import fi.jubic.dropwizard.cmd.dbunit.template.base64.Base64Encoder;
 import fi.jubic.dropwizard.cmd.dbunit.template.date.DateObject;
 import freemarker.template.Template;
@@ -15,12 +16,7 @@ import org.dbunit.operation.DatabaseOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,11 +29,17 @@ class DbUnitPopulateCommand<T extends Configuration> extends AbsDbUnitCommand<T>
     private static Logger logger = LoggerFactory.getLogger(DbUnitPopulateCommand.class);
 
     //
+    // Fields
+    // **************************************************************
+    private final DatabaseConfigurator databaseConfigurator;
+
+    //
     // Constructor(s)
     // **************************************************************
     DbUnitPopulateCommand (
             DatabaseConfiguration<T> strategy,
-            Class<T> configurationClass
+            Class<T> configurationClass,
+            DatabaseConfigurator databaseConfigurator
     ) {
         super(
                 "populate",
@@ -45,6 +47,7 @@ class DbUnitPopulateCommand<T extends Configuration> extends AbsDbUnitCommand<T>
                 strategy,
                 configurationClass
         );
+        this.databaseConfigurator = databaseConfigurator;
     }
 
     //
@@ -63,6 +66,9 @@ class DbUnitPopulateCommand<T extends Configuration> extends AbsDbUnitCommand<T>
         IDataSet dataSet = new FlatXmlDataSetBuilder()
                 .setMetaDataSetFromDtd(dtdStream)
                 .build(processStream(dataSetStream));
+
+        if (databaseConfigurator != null)
+            databaseConfigurator.configure(connection.getConfig());
 
         DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
 
