@@ -95,6 +95,7 @@ abstract class AbsDbUnitCommand<T extends Configuration> extends ConfiguredComma
                 break;
 
             case "com.mysql.jdbc.Driver":
+            case "com.mysql.cj.jdbc.Driver":
                 dataTypeFactory = new MySqlDataTypeFactory();
                 break;
 
